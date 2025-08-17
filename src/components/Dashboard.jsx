@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Sidebar from "./sidebar";
 import ProfileCard from "./ProfileCard";
 
 export default function Dashboard() {
@@ -32,16 +31,13 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="container">
-      <Sidebar onSave={fetchProfiles} />
-      <main>
-        <h1>My Coding Profiles</h1>
-        <div className="platforms">
-          {profiles.map((p, idx) => (
-            <ProfileCard key={idx} {...p} />
-          ))}
-        </div>
-      </main>
+    <div className="dashboard-container">
+      <h1>My Coding Profiles</h1>
+      <div className="platforms">
+        {profiles.map((p, idx) => (
+          <ProfileCard key={idx} {...p} />
+        ))}
+      </div>
     </div>
   );
 }
