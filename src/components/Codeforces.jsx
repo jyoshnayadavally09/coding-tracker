@@ -1,45 +1,86 @@
-// src/components/Codeforces.jsx
-import { useState } from "react";
+import React, { useState } from "react";
 
 function Codeforces() {
-  const [handle, setHandle] = useState("");
-  const [profile, setProfile] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [username, setUsername] = useState("");
+  const [userData, setUserData] = useState(null);
+  const [solvedCount, setSolvedCount] = useState(0);
+  const [error, setError] = useState("");
 
-  const fetchProfile = async () => {
-    if (!handle) return;
-    setLoading(true);
+  const fetchCodeforcesData = async () => {
+    if (!username) return;
 
     try {
-      const response = await fetch(`https://codeforces.com/api/user.info?handles=${handle}`);
-      const data = await response.json();
-      setProfile(data.result[0]);
-    } catch (error) {
-      console.error("Error fetching profile:", error);
-    }
+      setError("");
+      setUserData(null);
+      setSolvedCount(0);
 
-    setLoading(false);
+      // 1. Get user profile info
+      const profileRes = await fetch(
+        `https://codeforces.com/api/user.info?handles=${username}`
+      );
+      const profileData = await profileRes.json();
+
+      if (profileData.status === "FAILED") {
+        setError("⚠️ User not found!");
+        return;
+      }
+
+      const user = profileData.result[0];
+      setUserData(user);
+
+      // 2. Get submissions
+      const submissionsRes = await fetch(
+        `https://codeforces.com/api/user.status?handle=${username}`
+      );
+      const submissionsData = await submissionsRes.json();
+
+      if (submissionsData.status === "OK") {
+        // Count unique solved problems
+        const solvedSet = new Set();
+        submissionsData.result.forEach((sub) => {
+          if (sub.verdict === "OK") {
+            solvedSet.add(`${sub.problem.contestId}-${sub.problem.index}`);
+          }
+        });
+        setSolvedCount(solvedSet.size);
+      }
+    } catch (err) {
+      setError("❌ Failed to fetch data. Please try again.");
+    }
   };
 
   return (
-    <div>
-      <h2>Codeforces Profile</h2>
-      <input
-        type="text"
-        placeholder="Enter Codeforces handle"
-        value={handle}
-        onChange={(e) => setHandle(e.target.value)}
-      />
-      <button onClick={fetchProfile}>Load Profile</button>
+    <div className="p-6 max-w-lg mx-auto">
+      <h2 className="text-2xl font-bold mb-4">🔥 Codeforces Tracker</h2>
 
-      {loading && <p>Loading...</p>}
+      <div className="flex gap-2 mb-4">
+        <input
+          type="text"
+          placeholder="Enter Codeforces username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          className="border px-3 py-2 rounded w-full"
+        />
+        <button
+          onClick={fetchCodeforcesData}
+          className="bg-blue-600 text-white px-4 py-2 rounded"
+        >
+          Track
+        </button>
+      </div>
 
-      {profile && (
-        <div className="profile-card">
-          <h3>{profile.handle}</h3>
-          <p>Rating: {profile.rating}</p>
-          <p>Max Rating: {profile.maxRating}</p>
-          <p>Rank: {profile.rank}</p>
+      {error && <p className="text-red-500">{error}</p>}
+
+      {userData && (
+        <div className="bg-gray-100 p-4 rounded shadow">
+          <h3 className="text-xl font-semibold">{userData.handle}</h3>
+          <p>Rank: <strong>{userData.rank || "Unrated"}</strong></p>
+          <p>Rating: <strong>{userData.rating || "Unrated"}</strong></p>
+          <p>Max Rating: <strong>{userData.maxRating || "N/A"}</strong></p>
+          <p>Contribution: <strong>{userData.contribution}</strong></p>
+          <p className="mt-2 text-green-600">
+            ✅ Solved Problems: <strong>{solvedCount}</strong>
+          </p>
         </div>
       )}
     </div>
