@@ -4,7 +4,7 @@
   import Dashboard from "./components/Dashboard";
   import LeetCode from "./components/LeetCode";
   import Codeforces from "./components/Codeforces";
-  import Profile from "./components/Profile";
+  import Profile from "./components/profile";
   import SetTarget from "./components/SetTarget";
   import Codecheff from "./components/Codecheff";
 
