@@ -1,11 +1,11 @@
 // src/components/Sidebar.jsx
 import { Link } from "react-router-dom";
-import "./Sidebar.css";
+
 
 function Sidebar({ onLogout }) {
   return (
     <div className="sidebar">
-      <h2 className="logo">🚀 Tracker</h2>
+     
       <nav>
         <ul>
           

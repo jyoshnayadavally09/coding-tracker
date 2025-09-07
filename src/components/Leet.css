@@ -1,0 +1,113 @@
+/* ---------- Container ---------- */
+.leetcode-container {
+  padding: 20px;
+  color: #f3f4f6;
+}
+
+.leetcode-container h2 {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: #38bdf8; /* cyan heading */
+}
+
+/* ---------- Profile Card ---------- */
+.profile-card {
+  margin-top: 20px;
+  padding: 20px;
+  background: linear-gradient(145deg, #0f172a, #1e293b);
+  border-radius: 12px;
+  color: white;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+.profile-card h3 {
+  font-size: 22px;
+  margin-bottom: 10px;
+  color: #60a5fa;
+}
+
+.profile-card p {
+  margin: 6px 0;
+  font-size: 15px;
+}
+
+/* ---------- Roadmap Section ---------- */
+.roadmap {
+  margin-top: 40px;
+}
+
+.roadmap h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #22d3ee;
+}
+
+.roadmap-section {
+  margin-bottom: 25px;
+  padding: 18px;
+  background: #0f172a;
+  border-radius: 10px;
+  border: 1px solid #1e293b;
+}
+
+.roadmap-section h3 {
+  margin-bottom: 12px;
+  font-size: 20px;
+  color: #facc15; /* yellow section title */
+}
+
+/* ---------- Questions ---------- */
+.roadmap-section ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.roadmap-section li {
+  margin-bottom: 10px;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.roadmap-section input[type="checkbox"] {
+  margin-right: 10px;
+  transform: scale(1.2);
+  accent-color: #3b82f6; /* custom blue check */
+  cursor: pointer;
+}
+
+.roadmap-section a {
+  text-decoration: none;
+  color: #93c5fd;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.roadmap-section a:hover {
+  color: #3b82f6;
+  text-decoration: underline;
+}
+
+.roadmap-section a.completed {
+  color: gray !important;
+  text-decoration: line-through !important;
+}
+
+/* ---------- Progress Bar ---------- */
+.progress-bar {
+  margin-top: 10px;
+  width: 100%;
+  height: 8px;
+  background: #1e293b;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #06b6d4, #3b82f6);
+  border-radius: 5px;
+  transition: width 0.3s ease-in-out;
+}

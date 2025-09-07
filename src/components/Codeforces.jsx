@@ -1,49 +1,36 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 function Codeforces() {
   const [username, setUsername] = useState("");
-  const [userData, setUserData] = useState(null);
-  const [solvedCount, setSolvedCount] = useState(0);
+  const [solvedCount, setSolvedCount] = useState(null);
   const [error, setError] = useState("");
 
-  const fetchCodeforcesData = async () => {
+  const fetchSolvedCount = async () => {
     if (!username) return;
 
     try {
       setError("");
-      setUserData(null);
-      setSolvedCount(0);
+      setSolvedCount(null);
 
-      // 1. Get user profile info
-      const profileRes = await fetch(
-        `https://codeforces.com/api/user.info?handles=${username}`
+      const res = await fetch(
+        `https://codeforces.com/api/user.status?handle=${username}`
       );
-      const profileData = await profileRes.json();
+      const data = await res.json();
 
-      if (profileData.status === "FAILED") {
+      if (data.status !== "OK") {
         setError("⚠️ User not found!");
         return;
       }
 
-      const user = profileData.result[0];
-      setUserData(user);
+      // Count unique solved problems
+      const solvedSet = new Set();
+      data.result.forEach((sub) => {
+        if (sub.verdict === "OK") {
+          solvedSet.add(`${sub.problem.contestId}-${sub.problem.index}`);
+        }
+      });
 
-      // 2. Get submissions
-      const submissionsRes = await fetch(
-        `https://codeforces.com/api/user.status?handle=${username}`
-      );
-      const submissionsData = await submissionsRes.json();
-
-      if (submissionsData.status === "OK") {
-        // Count unique solved problems
-        const solvedSet = new Set();
-        submissionsData.result.forEach((sub) => {
-          if (sub.verdict === "OK") {
-            solvedSet.add(`${sub.problem.contestId}-${sub.problem.index}`);
-          }
-        });
-        setSolvedCount(solvedSet.size);
-      }
+      setSolvedCount(solvedSet.size);
     } catch (err) {
       setError("❌ Failed to fetch data. Please try again.");
     }
@@ -51,7 +38,7 @@ function Codeforces() {
 
   return (
     <div className="p-6 max-w-lg mx-auto">
-      <h2 className="text-2xl font-bold mb-4">🔥 Codeforces Tracker</h2>
+      <h2 className="text-2xl font-bold mb-4">🔥 Codeforces Solved Tracker</h2>
 
       <div className="flex gap-2 mb-4">
         <input
@@ -62,7 +49,7 @@ function Codeforces() {
           className="border px-3 py-2 rounded w-full"
         />
         <button
-          onClick={fetchCodeforcesData}
+          onClick={fetchSolvedCount}
           className="bg-blue-600 text-white px-4 py-2 rounded"
         >
           Track
@@ -71,15 +58,11 @@ function Codeforces() {
 
       {error && <p className="text-red-500">{error}</p>}
 
-      {userData && (
-        <div className="bg-gray-100 p-4 rounded shadow">
-          <h3 className="text-xl font-semibold">{userData.handle}</h3>
-          <p>Rank: <strong>{userData.rank || "Unrated"}</strong></p>
-          <p>Rating: <strong>{userData.rating || "Unrated"}</strong></p>
-          <p>Max Rating: <strong>{userData.maxRating || "N/A"}</strong></p>
-          <p>Contribution: <strong>{userData.contribution}</strong></p>
-          <p className="mt-2 text-green-600">
-            ✅ Solved Problems: <strong>{solvedCount}</strong>
+      {solvedCount !== null && (
+        <div className="bg-gray-800 text-white p-4 rounded shadow">
+          <p className="text-lg">
+            ✅ Total Solved Problems:{" "}
+            <strong className="text-green-400">{solvedCount}</strong>
           </p>
         </div>
       )}

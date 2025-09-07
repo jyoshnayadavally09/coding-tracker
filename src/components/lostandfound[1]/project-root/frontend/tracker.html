@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Coding Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Coding Progress Tracker</h1>
+        <a href="index.html" class="btn">Back to Dashboard</a>
+    </header>
+
+    <section class="tracker-form">
+        <label for="platform">Select Platform:</label>
+        <select id="platform">
+            <option value="leetcode">LeetCode</option>
+            <option value="codeforces">Codeforces</option>
+            <option value="github">GitHub</option>
+            <option value="hackerrank">HackerRank</option>
+        </select>
+
+        <label for="username">Enter Username:</label>
+        <input type="text" id="username" placeholder="Enter your username">
+
+        <label for="target">Set Target (Problems):</label>
+        <input type="number" id="target" placeholder="e.g. 100">
+
+        <button id="saveProfile" class="btn">Save Profile</button>
+    </section>
+
+    <section class="stats">
+        <h2>Live Stats</h2>
+        <div id="statsDisplay">No data yet.</div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
