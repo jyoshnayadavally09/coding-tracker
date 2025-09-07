@@ -1,8 +1,0 @@
-{
-  "name": "Your Name",
-  "platforms": {
-    "leetcode": { "username": "your_leetcode_id", "target": 100 },
-    "codeforces": { "username": "your_codeforces_id", "target": 200 },
-    "hackerrank": { "username": "your_hackerrank_id", "target": 150 }
-  }
-}
